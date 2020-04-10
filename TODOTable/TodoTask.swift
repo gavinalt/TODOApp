@@ -8,27 +8,26 @@
 
 import Foundation
 
-class TodoTask {
+class TodoTask: Codable {
     var title: String
     var description: String
     var dueDate: Date
-    var imgName: String
+    var image: Data
     var done: Bool
 
-    public init(title: String, description: String, dueDate: Date, imageName: String) {
+    init(title: String, description: String, dueDate: Date, image: Data) {
         self.title = title
         self.description = description
         self.dueDate = dueDate
-        self.imgName = imageName
+        self.image = image
         self.done = false
     }
-}
-
-extension TodoTask {
-    public class func getMockData() -> [TodoTask] {
-        return [
-            TodoTask(title: "Testtask1", description: "testtest11", dueDate: Date.init(), imageName: "placeholder"),
-            TodoTask(title: "Testtask2", description: "testtest22", dueDate: Date.distantFuture, imageName: "placeholder")
-        ]
+    
+    func updateTask(newTodoTask: TodoTask) {
+        title = newTodoTask.title
+        description = newTodoTask.description
+        dueDate = newTodoTask.dueDate
+        image = newTodoTask.image
+        done = newTodoTask.done
     }
 }

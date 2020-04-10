@@ -7,10 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		860F9EFC2440DEAE00F3E74A /* TodoTaskDetailDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 860F9EFB2440DEAE00F3E74A /* TodoTaskDetailDelegate.swift */; };
+		860F9EFE2441062B00F3E74A /* TodoTaskList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 860F9EFD2441062B00F3E74A /* TodoTaskList.swift */; };
 		86756354242C500B00199D19 /* PassableUIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86756353242C500B00199D19 /* PassableUIButton.swift */; };
 		86756356242C553D00199D19 /* TodoCompletedListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86756355242C553D00199D19 /* TodoCompletedListTableViewController.swift */; };
 		8695F428242B88D80052B1AA /* TodoListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8695F427242B88D80052B1AA /* TodoListTableViewController.swift */; };
 		8695F44C242BB3280052B1AA /* TodoTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8695F44B242BB3280052B1AA /* TodoTask.swift */; };
+		86D50380242D2204008C5A19 /* TodoEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86D5037F242D2204008C5A19 /* TodoEditViewController.swift */; };
 		86F4FF9F24240E4200535A16 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86F4FF9E24240E4200535A16 /* AppDelegate.swift */; };
 		86F4FFA124240E4200535A16 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86F4FFA024240E4200535A16 /* SceneDelegate.swift */; };
 		86F4FFA624240E4200535A16 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 86F4FFA424240E4200535A16 /* Main.storyboard */; };
@@ -19,10 +22,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		860F9EFB2440DEAE00F3E74A /* TodoTaskDetailDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoTaskDetailDelegate.swift; sourceTree = "<group>"; };
+		860F9EFD2441062B00F3E74A /* TodoTaskList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoTaskList.swift; sourceTree = "<group>"; };
 		86756353242C500B00199D19 /* PassableUIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PassableUIButton.swift; sourceTree = "<group>"; };
 		86756355242C553D00199D19 /* TodoCompletedListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoCompletedListTableViewController.swift; sourceTree = "<group>"; };
 		8695F427242B88D80052B1AA /* TodoListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListTableViewController.swift; sourceTree = "<group>"; };
 		8695F44B242BB3280052B1AA /* TodoTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoTask.swift; sourceTree = "<group>"; };
+		86D5037F242D2204008C5A19 /* TodoEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoEditViewController.swift; sourceTree = "<group>"; };
 		86F4FF9B24240E4200535A16 /* TODOTable.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TODOTable.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		86F4FF9E24240E4200535A16 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		86F4FFA024240E4200535A16 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -65,13 +71,16 @@
 				86F4FF9E24240E4200535A16 /* AppDelegate.swift */,
 				86F4FFA024240E4200535A16 /* SceneDelegate.swift */,
 				86F4FFA424240E4200535A16 /* Main.storyboard */,
-				86756353242C500B00199D19 /* PassableUIButton.swift */,
-				8695F44B242BB3280052B1AA /* TodoTask.swift */,
 				86F4FFA724240E4300535A16 /* Assets.xcassets */,
 				86F4FFA924240E4300535A16 /* LaunchScreen.storyboard */,
 				86F4FFAC24240E4300535A16 /* Info.plist */,
+				8695F44B242BB3280052B1AA /* TodoTask.swift */,
+				860F9EFD2441062B00F3E74A /* TodoTaskList.swift */,
+				860F9EFB2440DEAE00F3E74A /* TodoTaskDetailDelegate.swift */,
+				86756353242C500B00199D19 /* PassableUIButton.swift */,
 				8695F427242B88D80052B1AA /* TodoListTableViewController.swift */,
 				86756355242C553D00199D19 /* TodoCompletedListTableViewController.swift */,
+				86D5037F242D2204008C5A19 /* TodoEditViewController.swift */,
 			);
 			path = TODOTable;
 			sourceTree = "<group>";
@@ -149,8 +158,11 @@
 			files = (
 				86F4FF9F24240E4200535A16 /* AppDelegate.swift in Sources */,
 				86756356242C553D00199D19 /* TodoCompletedListTableViewController.swift in Sources */,
+				860F9EFC2440DEAE00F3E74A /* TodoTaskDetailDelegate.swift in Sources */,
+				86D50380242D2204008C5A19 /* TodoEditViewController.swift in Sources */,
 				86F4FFA124240E4200535A16 /* SceneDelegate.swift in Sources */,
 				8695F44C242BB3280052B1AA /* TodoTask.swift in Sources */,
+				860F9EFE2441062B00F3E74A /* TodoTaskList.swift in Sources */,
 				86756354242C500B00199D19 /* PassableUIButton.swift in Sources */,
 				8695F428242B88D80052B1AA /* TodoListTableViewController.swift in Sources */,
 			);

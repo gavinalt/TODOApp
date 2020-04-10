@@ -9,8 +9,6 @@
 import UIKit
 
 class TodoListTableViewCell: UITableViewCell {
-    var todoTaskIndex: Int?
-    
     @IBOutlet weak var todoTitle: UILabel!
     @IBOutlet weak var todoDueDate: UILabel!
     @IBOutlet weak var todoDesc: UILabel!
@@ -18,7 +16,7 @@ class TodoListTableViewCell: UITableViewCell {
     @IBOutlet weak var todoCompleteBtn: PassableUIButton!
 }
 
-class TodoListTableViewController: UITableViewController {
+class TodoListTableViewController: UITableViewController, TodoTaskDetailDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,12 +26,19 @@ class TodoListTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        
         self.title = "TODO"
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.didTapAddTaskButton(_:)))
+        todoTasks = SceneDelegate.todoTaskList.getUnfinishedTasks()
     }
 
     // MARK: - Table view data source
-    private var todoTasks = TodoTask.getMockData()
+    var todoTasks: [TodoTask] = [] {
+        didSet {
+            if isViewLoaded {
+                tableView.reloadData()
+            }
+        }
+    }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
@@ -47,22 +52,23 @@ class TodoListTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "todoTaskCell", for: indexPath) as! TodoListTableViewCell
-        cell.todoTaskIndex = indexPath.row
         cell.todoCompleteBtn.params["taskIndex"] = indexPath.row
 
         if indexPath.row < todoTasks.count {
             let cellTask = todoTasks[indexPath.row]
-            cell.todoTitle?.text = cellTask.title
+            cell.todoTitle.text = cellTask.title
             
             let formatter = DateFormatter()
             formatter.dateFormat = "yyyy/MM/dd HH:mm"
-            cell.todoDueDate?.text = formatter.string(from: cellTask.dueDate)
+            cell.todoDueDate.text = formatter.string(from: cellTask.dueDate)
             if (cellTask.dueDate < Date.init()) {
-                cell.todoDueDate?.textColor = .red
+                cell.todoDueDate.textColor = .red
+            } else {
+                cell.todoDueDate.textColor = .black
             }
             
-            cell.todoDesc?.text = cellTask.description
-            cell.todoImg?.image = UIImage(named: cellTask.imgName)
+            cell.todoDesc.text = cellTask.description
+            cell.todoImg.image = UIImage(data: cellTask.image)
             
 //            let accessory: UITableViewCell.AccessoryType = cellTask.done ? .checkmark : .none
 //            cell.accessoryType = accessory
@@ -72,10 +78,10 @@ class TodoListTableViewController: UITableViewController {
     }
 
     @IBAction func cellCompleteTodoTask(_ sender: PassableUIButton) {
-        guard let index = sender.params["taskIndex"] else {
-            return
-        }
-        todoTasks[index as! Int].done = true
+        guard let index = sender.params["taskIndex"] as? Int else { return }
+        guard let listIndex = SceneDelegate.todoTaskList.indexOf(task: todoTasks[index]) else { return }
+        SceneDelegate.todoTaskList.value(forIndex: listIndex).done = true
+        todoTasks = SceneDelegate.todoTaskList.getUnfinishedTasks()
     }
     
     // Override to support conditional editing of the table view.
@@ -87,9 +93,9 @@ class TodoListTableViewController: UITableViewController {
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            // Delete the row from the data source
             todoTasks.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
+            SceneDelegate.todoTaskList.removeValue(task: todoTasks[indexPath.row])
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
@@ -97,27 +103,35 @@ class TodoListTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-
-        if indexPath.row < todoTasks.count {
-            let item = todoTasks[indexPath.row]
-            
-
-            tableView.reloadRows(at: [indexPath], with: .automatic)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "cellSelectedSegue" {
+            let segueDestination = segue.destination as! TodoEditViewController
+            if let taskIndex = tableView.indexPathForSelectedRow?.row {
+                segueDestination.todoTaskDetailDelegate = self
+                segueDestination.curTodoTask = todoTasks[taskIndex]
+                segueDestination.curTodoTaskIndex = taskIndex
+            }
+        } else if segue.identifier == "newTodoSegue" {
+            let segueDestination = segue.destination as! TodoEditViewController
+            segueDestination.todoTaskDetailDelegate = self
+            segueDestination.curTodoTaskIndex = -1
         }
     }
     
-    @objc func didTapAddTaskButton(_ sender: UIBarButtonItem) {
+    func addTodoTask(newTodoTask: TodoTask) {
+        todoTasks.append(newTodoTask)
+        tableView.reloadData()
+        SceneDelegate.todoTaskList.insert(newTodoTask)
     }
-
-    private func addNewToDoItem(title: String) {
-        // The index of the new item will be the current item count
-        let newIndex = todoTasks.count
-
-        // Create new item and add it to the todo items list
-//        todoTasks.append()
-
-        // Tell the table view a new row has been created
-        tableView.insertRows(at: [IndexPath(row: newIndex, section: 0)], with: .top)
+    
+    func editTodoTask(todoTaskIndex: Int, newTodoTask: TodoTask) {
+        let oldTodoTask = todoTasks[todoTaskIndex]
+        oldTodoTask.updateTask(newTodoTask: newTodoTask)
+        tableView.reloadRows(at: [IndexPath(row: todoTaskIndex, section: 0)], with: .fade)
+        let listIndex = SceneDelegate.todoTaskList.indexOf(task: oldTodoTask)!
+        SceneDelegate.todoTaskList.value(forIndex: listIndex).updateTask(newTodoTask: newTodoTask)
     }
 
     /*
