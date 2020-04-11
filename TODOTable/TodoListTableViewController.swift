@@ -32,21 +32,13 @@ class TodoListTableViewController: UITableViewController, TodoTaskDetailDelegate
     }
 
     // MARK: - Table view data source
-    var todoTasks: [TodoTask] = [] {
-        didSet {
-            if isViewLoaded {
-                tableView.reloadData()
-            }
-        }
-    }
+    var todoTasks: [TodoTask] = []
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         return todoTasks.count
     }
 
@@ -79,9 +71,10 @@ class TodoListTableViewController: UITableViewController, TodoTaskDetailDelegate
 
     @IBAction func cellCompleteTodoTask(_ sender: PassableUIButton) {
         guard let index = sender.params["taskIndex"] as? Int else { return }
+        todoTasks.remove(at: index)
+        tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .fade)
         guard let listIndex = SceneDelegate.todoTaskList.indexOf(task: todoTasks[index]) else { return }
         SceneDelegate.todoTaskList.value(forIndex: listIndex).done = true
-        todoTasks = SceneDelegate.todoTaskList.getUnfinishedTasks()
     }
     
     // Override to support conditional editing of the table view.
@@ -121,8 +114,9 @@ class TodoListTableViewController: UITableViewController, TodoTaskDetailDelegate
     }
     
     func addTodoTask(newTodoTask: TodoTask) {
+        let newIndex = todoTasks.count
         todoTasks.append(newTodoTask)
-        tableView.reloadData()
+        tableView.insertRows(at: [IndexPath(row: newIndex, section: 0)], with: .top)
         SceneDelegate.todoTaskList.insert(newTodoTask)
     }
     
