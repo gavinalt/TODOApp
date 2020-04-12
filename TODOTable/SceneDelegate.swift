@@ -72,6 +72,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Called as the scene transitions from the foreground to the background.
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
+        do {
+            try SceneDelegate.todoTaskList.saveToDisk(withName: TodoTaskList.fileName)
+            print("Task List Saved!")
+        } catch {
+            print("Task List Can't be Saved!")
+            print("\(error)")
+        }
     }
 
 

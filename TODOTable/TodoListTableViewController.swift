@@ -71,10 +71,11 @@ class TodoListTableViewController: UITableViewController, TodoTaskDetailDelegate
 
     @IBAction func cellCompleteTodoTask(_ sender: PassableUIButton) {
         guard let index = sender.params["taskIndex"] as? Int else { return }
+        if let listIndex = SceneDelegate.todoTaskList.indexOf(task: todoTasks[index]) {
+            SceneDelegate.todoTaskList.value(forIndex: listIndex).done = true
+        }
         todoTasks.remove(at: index)
         tableView.deleteRows(at: [IndexPath(row: index, section: 0)], with: .fade)
-        guard let listIndex = SceneDelegate.todoTaskList.indexOf(task: todoTasks[index]) else { return }
-        SceneDelegate.todoTaskList.value(forIndex: listIndex).done = true
     }
     
     // Override to support conditional editing of the table view.
@@ -86,9 +87,9 @@ class TodoListTableViewController: UITableViewController, TodoTaskDetailDelegate
     // Override to support editing the table view.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
+            SceneDelegate.todoTaskList.removeValue(task: todoTasks[indexPath.row])
             todoTasks.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
-            SceneDelegate.todoTaskList.removeValue(task: todoTasks[indexPath.row])
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
